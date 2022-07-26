@@ -1,0 +1,27 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © xobiccc
+
+//@version=5
+indicator("Regime Filter")
+
+// Get user input
+tf = input.timeframe(defval = '1D', title = 'Timeframe')
+ema_period = input.int(title = 'EMA Lenght', defval = 20)
+market = input.symbol(title = 'Market', defval = "NASDAQ:NDX")
+
+// Define custom security function
+func_security(_market, _tf, _exp) =>
+    request.security(_market, _tf, _exp[barstate.isrealtime ? 1 : 0]) // anti-repainting
+    
+    
+// Get EMA Value
+ema = ta.ema(close, ema_period)
+ema_value = func_security(market, tf, ema)
+
+// Check if price above or below ema
+market_price = func_security(market, tf, close)
+regime_filter = market_price > ema_value or market_price[1] > ema_value[1]
+
+
+// Change background color
+bgcolor(regime_filter ? color.green: color.red)
