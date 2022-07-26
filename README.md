@@ -1,2 +1,2 @@
 # Tradingview_Pine_Scripts
-Collection of the pine scripts that I have written for tradingview
+Collection of indicators and strategies that I have coded using Tradingview's pine script
